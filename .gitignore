@@ -5,6 +5,12 @@
 *.suo
 *.user
 *.sln.docstates
+targetver.h
+app.*
+ReadMe.txt
+stdafx.*
+*.ico
+
 
 # Build results
 

@@ -120,9 +120,9 @@ CommandList^ MachineData::build_sqls(FileInfo ^fi, int machid, int priority) {
 
   for each (System::Data::DataRow ^r in get_where_used(prog)->Rows) {
     SqlCommand ^comm = gcnew SqlCommand(sql, connection);
-    comm->Parameters->Add("@machid", machid);
-    comm->Parameters->Add("@partid", parse<int>(r->ItemArray[0]->ToString()));
-    comm->Parameters->Add("@prio", priority);
+    comm->Parameters->AddWithValue("@machid", machid);
+    comm->Parameters->AddWithValue("@partid", parse<int>(r->ItemArray[0]->ToString()));
+    comm->Parameters->AddWithValue("@prio", priority);
     sqls->Add(comm);
   }
   return sqls;
@@ -136,8 +136,8 @@ bool MachineData::record_exists(int machid, string ^partnum) {
     "WHERE ((CUT_MACHINES.MACHID = @machid) AND (CUT_PARTS.PARTNUM = @partnum))";
   if (connected) {
     SqlCommand ^comm = gcnew SqlCommand(sql);
-    comm->Parameters->Add("@machid", machid);
-    comm->Parameters->Add("@partnum", partnum);
+    comm->Parameters->AddWithValue("@machid", machid);
+    comm->Parameters->AddWithValue("@partnum", partnum);
     try {
       DataReader ^dr = comm->ExecuteReader(System::Data::CommandBehavior::SingleResult);
       res = dr->Read();

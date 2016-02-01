@@ -119,11 +119,16 @@ CommandList^ MachineData::build_sqls(FileInfo ^fi, int machid, int priority) {
   int tempint = 0;
 
   for each (System::Data::DataRow ^r in get_where_used(prog)->Rows) {
-    SqlCommand ^comm = gcnew SqlCommand(sql, connection);
-    comm->Parameters->AddWithValue("@machid", machid);
-    comm->Parameters->AddWithValue("@partid", parse<int>(r->ItemArray[0]->ToString()));
-    comm->Parameters->AddWithValue("@prio", priority);
-    sqls->Add(comm);
+    if (!record_exists(machid, prog) && machid > 0) {
+      SqlCommand ^comm = gcnew SqlCommand(sql, connection);
+      comm->Parameters->AddWithValue("@machid", machid);
+      comm->Parameters->AddWithValue("@partid", parse<int>(r->ItemArray[0]->ToString()));
+      comm->Parameters->AddWithValue("@prio", priority);
+      sqls->Add(comm);
+    }
+    else {
+      System::Console::WriteLine(string::Format("Skipped {0}:{1}", machid, prog));
+    }
   }
   return sqls;
 }
@@ -135,7 +140,7 @@ bool MachineData::record_exists(int machid, string ^partnum) {
     "INNER JOIN CUT_MACHINES ON CUT_MACHINE_PROGRAMS.MACHID = CUT_MACHINES.MACHID " +
     "WHERE ((CUT_MACHINES.MACHID = @machid) AND (CUT_PARTS.PARTNUM = @partnum))";
   if (connected) {
-    SqlCommand ^comm = gcnew SqlCommand(sql);
+    SqlCommand ^comm = gcnew SqlCommand(sql, connection);
     comm->Parameters->AddWithValue("@machid", machid);
     comm->Parameters->AddWithValue("@partnum", partnum);
     try {

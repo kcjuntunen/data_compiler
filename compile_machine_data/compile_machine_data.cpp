@@ -15,17 +15,17 @@ int main(array<System::String ^> ^args)
     for each (FileInfo ^fi in fil) {
       for each (SqlCommand ^c in md->build_sqls(fi, mid, 1)) {
         Console::Write(".");
-        //c->ExecuteNonQuery();
+        c->ExecuteNonQuery();
         count++;
       }
     }
     Console::WriteLine();
-    Console::WriteLine(count);
+    Console::WriteLine(string::Format("{0} records inserted.", count));
   }
   else {
     System::Console::WriteLine("ARGS:");
     for each (string ^s in args) {
-      System::Console::Write(string::Format("{0} ", s));
+      System::Console::Write(string::Format("{0} args.", s));
     }
   }
   /*System::Console::ReadLine();*/

@@ -119,7 +119,7 @@ CommandList^ MachineData::build_sqls(FileInfo ^fi, int machid, int priority) {
   int tempint = 0;
 
   for each (System::Data::DataRow ^r in get_where_used(prog)->Rows) {
-    if (!record_exists(machid, prog) && machid > 0) {
+    if (!record_exists(machid, r->ItemArray[0]->ToString()) && machid > 0) {
       SqlCommand ^comm = gcnew SqlCommand(sql, connection);
       comm->Parameters->AddWithValue("@machid", machid);
       comm->Parameters->AddWithValue("@partid", parse<int>(r->ItemArray[0]->ToString()));

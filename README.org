@@ -1,0 +1,6 @@
+#+title: README
+
+* data_compiler
+The intent is to create complete tables of what programs exist for what machines.
+* priority
+This is an unfinished back-burner project.

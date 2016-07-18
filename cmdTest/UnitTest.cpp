@@ -12,9 +12,9 @@ namespace cmdTest
 	public ref class UnitTest
 	{
 	private:
-		TestContext^ testContextInstance;
-
-	public: 
+    TestContext^ testContextInstance;
+    MachineData ^md = gcnew MachineData();
+	public:
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
@@ -36,38 +36,32 @@ namespace cmdTest
 		//You can use the following additional attributes as you write your tests:
 		//
 		//Use ClassInitialize to run code before running the first test in the class
-		//[ClassInitialize()]
-		//static void MyClassInitialize(TestContext^ testContext) {};
-		//
+		[ClassInitialize()]
+    static void MyClassInitialize(Microsoft::VisualStudio::TestTools::UnitTesting::TestContext^ testContext) {
+    };
+
 		//Use ClassCleanup to run code after all tests in a class have run
-		//[ClassCleanup()]
-		//static void MyClassCleanup() {};
-		//
+		[ClassCleanup()]
+		static void MyClassCleanup() { };
+
 		//Use TestInitialize to run code before running each test
-		//[TestInitialize()]
-		//void MyTestInitialize() {};
+		[TestInitialize()]
+    void MyTestInitialize() { };
 		//
 		//Use TestCleanup to run code after each test has run
-		//[TestCleanup()]
-		//void MyTestCleanup() {};
+		[TestCleanup()]
+		void MyTestCleanup() { };
 		//
     #pragma endregion
 
     [TestMethod]
-    void TestMethod1() {
-      MachineData ^md = gcnew MachineData();
-      Assert::AreEqual(md->record_exists(2, "Z65263"), true);
+    void Test_record_exists() {
+      Assert::IsFalse(md->record_exists(2, "Z65263"));
+      Assert::IsFalse(md->record_exists(1, "Z65263"));
     };
 
     [TestMethod]
-    void TestMethod2() {
-      MachineData ^md = gcnew MachineData();
-      Assert::AreEqual(md->record_exists(1, "Z65263"), false);
-    };
-
-    [TestMethod]
-    void TestMethod3() {
-      MachineData ^md = gcnew MachineData();
+    void Test_get_machine_id() {
       Assert::AreEqual(md->get_machine_id("CMS1097"), 1);
       Assert::AreEqual(md->get_machine_id("CMS1283"), 2);
       Assert::AreEqual(md->get_machine_id("BHC750"), 11);

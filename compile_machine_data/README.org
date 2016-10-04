@@ -1,0 +1,5 @@
+
+* Usage
+#+begin_src sh
+$ ./compile_machine_data.exe CMS1097.txt CMS1097
+#+end_src
